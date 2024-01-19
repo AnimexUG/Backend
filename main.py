@@ -1,7 +1,7 @@
 from fastapi import FastAPI,Depends
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
-from Controllers.sensor_data_controllers import combine_longitude_latitude
+from Controllers.sensor_data_controllers import start_device_data_collection
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -16,7 +16,7 @@ class AppLifespan:
         self.background_task = None
 
     async def startup(self):
-        self.background_task = asyncio.create_task(combine_longitude_latitude())
+        self.background_task = asyncio.create_task(start_device_data_collection())
 
     async def shutdown(self):
         if self.background_task:
