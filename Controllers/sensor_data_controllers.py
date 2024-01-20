@@ -56,3 +56,13 @@ async def combine_longitude_latitude():
         except Exception as e:
             print(f"Error: {e}") 
         await asyncio.sleep(30)
+
+
+async def get_device_data(device_id):
+    with session as db:
+        return SensorData.get_data_by_device_id(db, device_id)
+    
+async def get_unique_device_ids():
+    with session as db:
+        result = SensorData.get_unique_devices(db)
+        return [device_id for (device_id,) in result]

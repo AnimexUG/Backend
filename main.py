@@ -2,6 +2,11 @@ from fastapi import FastAPI,Depends
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 from Controllers.sensor_data_controllers import start_device_data_collection
+
+from Routes import (
+    sensor_data_routes,
+)
+
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -40,6 +45,7 @@ async def shutdown_event():
 async def read_root(lifespan: AppLifespan = Depends()):
     return {"Hello": "World"}
 
+app.include_router(sensor_data_routes.router, prefix= "/data")
 
 if __name__ == "__main__":
     import uvicorn

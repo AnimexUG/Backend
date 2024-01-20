@@ -11,6 +11,14 @@ class SensorData(Base):
     lat = Column(Float)
     timestamp = Column(DateTime, default=datetime.datetime.utcnow)
 
-Base.metadata.drop_all(engine) 
+    @staticmethod
+    def get_data_by_device_id(db_session, device_id):
+        return db_session.query(SensorData).filter(SensorData.device_id == device_id).all()
+    
+    @staticmethod
+    def get_unique_devices(db_session):
+        return db_session.query(SensorData.device_id).distinct().all()
+
+# Base.metadata.drop_all(engine) 
 Base.metadata.create_all(engine)
 
