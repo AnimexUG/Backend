@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Float, Integer, String, DateTime
 from Connections.connections import Base,engine
 import datetime
+from hashing import Harsher
 
 class SensorData(Base):
     __tablename__ = 'sensor_data'
@@ -33,13 +34,27 @@ class Admin(Base):
         return db_session.query(Admin).all()
     
     @staticmethod
+    def username_exists(db_session, username):
+        return db_session.query(Admin).filter(Admin.username == username).first() is not None
+    
+    @staticmethod
     def get_username(db_session):
         return db_session.query(Admin.username).all()
     
     @staticmethod
+    def get_userdata_by_username(db_session, username):
+        return db_session.query(Admin).filter(Admin.username == username).first()
+
+    @staticmethod
     def confirm_password_login(db_session, username, password):
        # username can be username or email
         return db_session.query(Admin).filter(Admin.username == username, Admin.password == password).first()
+    
+    def update_password(self, new_password):
+        hashed_password = Harsher.get_hash_password(new_password)
+        print(f"Updating password to: {hashed_password}") 
+        self.password = hashed_password
+
 
 # Base.metadata.drop_all(engine)
 Base.metadata.create_all(engine)
