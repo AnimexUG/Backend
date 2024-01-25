@@ -66,3 +66,4 @@ async def get_unique_device_ids():
     with session as db:
         result = SensorData.get_unique_devices(db)
         return [device_id for (device_id,) in result]
+

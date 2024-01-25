@@ -4,3 +4,7 @@ alembic
 sqlalchemy
 psycopg2
 httpx
+secrets
+passlib
+python-jose
+secure-smtplib==0.1.1

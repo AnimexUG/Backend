@@ -8,3 +8,7 @@ engine = create_engine('postgresql://animax2024:sG3WXK1PmJkT@ep-lively-hall-a2s1
 Session = sessionmaker(bind=engine)
 session = Session()
 Base = declarative_base()
+
+
+EMAIL = "animax2024@gmail.com"
+EMAIL_PASSWORD = "ytnu gxyu gjqt zxyi"
