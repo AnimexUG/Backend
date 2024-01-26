@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 import asyncio
-from Controllers.admin_controller import create_admin,login,reset_user_password,send_password_reset
+from Models.models import UsernameChangeRequest
+from Controllers.admin_controller import create_admin,login,reset_user_password,send_password_reset,change_username
 router = APIRouter()
 
 # create admin
@@ -36,5 +37,13 @@ async def reset_password_endpoint(token_and_password: dict):
     try:
         reset_user_password(token, new_password)
         return {"message": "Password reset successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@router.post("/change_username")
+async def change_username_endpoint(request: UsernameChangeRequest):
+    try:
+        response = change_username(request)
+        return response
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

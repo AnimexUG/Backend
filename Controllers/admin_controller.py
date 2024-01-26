@@ -1,4 +1,4 @@
-from Models.models import Admin
+from Models.models import Admin,UsernameChangeRequest
 from fastapi import APIRouter, HTTPException
 from Connections.connections import session,EMAIL,EMAIL_PASSWORD
 import secrets
@@ -154,11 +154,16 @@ async def login(credentials):
     if admin and Harsher.verify_password(input_password, admin.password):
         token_data = {"sub": username}
         access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-        admin_data = Admin.get_admin(db)
+        # admin_data = Admin.get_admin(db)
         access_token = create_access_token(
             data=token_data, 
             expires_delta=access_token_expires
         )
+        admin_data = {
+            "id": admin.id,
+            "username": admin.username,
+            "email": admin.email
+        }
         return {"data": admin_data,"access_token": access_token, "token_type": "bearer"}
     else:
         raise Exception("Invalid Username or Password")
@@ -244,3 +249,25 @@ def reset_user_password(token, new_password):
         raise
 
     return True
+
+def change_username(request):
+    db = session
+    admin = db.query(Admin).filter(Admin.username == request.current_username).first()
+
+    if not admin:
+        raise Exception("Admin not found")
+    
+    new_username = f"{request.new_username_prefix}@Animex.ug"
+
+    if Admin.username_exists(db, new_username):
+        raise Exception("This username is already taken")
+    
+    admin.username = new_username
+
+    try:
+        db.commit()
+        return {"message":"Username updated successfully"}
+    except Exception as e:
+        print(f"Error in commit: {e}")
+        db.rollback()
+        raise

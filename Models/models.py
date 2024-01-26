@@ -2,6 +2,8 @@ from sqlalchemy import Column, Float, Integer, String, DateTime
 from Connections.connections import Base,engine
 import datetime
 from hashing import Harsher
+from pydantic import BaseModel
+
 
 class SensorData(Base):
     __tablename__ = 'sensor_data'
@@ -54,6 +56,13 @@ class Admin(Base):
         hashed_password = Harsher.get_hash_password(new_password)
         print(f"Updating password to: {hashed_password}") 
         self.password = hashed_password
+
+    def update_username(self, new_username_prefix):
+        self.username = f"{new_username_prefix}@Animex.ug"
+
+class UsernameChangeRequest(BaseModel):
+    current_username: str
+    new_username_prefix: str
 
 
 # Base.metadata.drop_all(engine)
