@@ -3,7 +3,6 @@ bcrypt == 4.0.1
 uvicorn
 alembic
 sqlalchemy
-psycopg2
 httpx
 passlib
 python-jose
