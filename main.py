@@ -46,6 +46,9 @@ app.add_middleware(
 # @app.get("/")
 # async def read_root(lifespan: AppLifespan = Depends()):
 #     return {"Hello": "World"}
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
 
 app.include_router(sensor_data_routes.router, prefix= "/data")
 app.include_router(admin_data_routes.router, prefix= "/admin")
