@@ -1,7 +1,7 @@
 from fastapi import FastAPI,Depends
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
-from Controllers.sensor_data_controllers import start_device_data_collection
+# from Controllers.sensor_data_controllers import start_device_data_collection
 
 from Routes import (
     admin_data_routes,
