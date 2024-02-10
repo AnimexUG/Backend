@@ -12,7 +12,20 @@ class SensorData(Base):
     device_id = Column(String)
     lng = Column(Float)
     lat = Column(Float)
+    battery = Column(String, default="100%")
     timestamp = Column(DateTime, default=datetime.datetime.utcnow)
+
+    # addig data to the database
+    @staticmethod
+    def add_sensor_data(db_session, device_id, longitude, latitude,battery):
+        sensor_data = SensorData(device_id=device_id, lng=longitude, lat=latitude, battery=battery)
+        try:
+            db_session.add(sensor_data)
+            db_session.commit()
+            db_session.refresh(sensor_data)
+        except Exception as e:
+            print(f"Error occurred: {e}")
+            db_session.rollback()
 
     @staticmethod
     def get_data_by_device_id(db_session, device_id):

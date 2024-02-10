@@ -1,10 +1,17 @@
 from fastapi import APIRouter, HTTPException
 import asyncio
-from Controllers.sensor_data_controllers import get_device_data,get_unique_device_ids
+from Controllers.sensor_data_controllers import get_device_data,get_unique_device_ids,add_sensor_data_controller
 router = APIRouter()
 # @router.on_event("startup")
 # async def startup_event():
 #     asyncio.create_task(combine_longitude_latitude())
+@router.post("/add")
+async def add_sensor_data(sensor_data: dict):
+    try:
+        await add_sensor_data_controller(sensor_data)
+        return {"status": "success", "message": "Data added successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/device/")
 async def read_device_data(device_id: str):
@@ -21,3 +28,4 @@ async def read_device_data(device_id: str):
 async def read_unique_device_id():
     devices = await get_unique_device_ids()
     return {"devices": devices}
+

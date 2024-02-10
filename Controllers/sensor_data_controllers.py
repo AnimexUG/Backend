@@ -26,6 +26,14 @@ async def start_device_data_collection():
         
         await asyncio.sleep(30) 
 
+async def add_sensor_data_controller(sensor_data):
+    try:
+        SensorData.add_sensor_data(session,sensor_data["device_id"],sensor_data["Latitude"], sensor_data["Longitude"], sensor_data["Battery"])
+        return {"status": "success", "message": "Data added successfully"}
+    except Exception as e:
+        print(f"Error occurred: {e}")
+
+    
 async def fetch_and_store_device_data(device_id, longitude_url, latitude_url):
     async with httpx.AsyncClient() as client:
         longitude_response = await client.get(longitude_url)
