@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Float, Integer, String, DateTime
 from Connections.connections import Base,engine
-import datetime
+from datetime import datetime, UTC
 from hashing import Harsher
 from pydantic import BaseModel
 
@@ -12,8 +12,8 @@ class SensorData(Base):
     device_id = Column(String)
     lng = Column(Float)
     lat = Column(Float)
-    battery = Column(String, default="100%")
-    timestamp = Column(DateTime, default=datetime.datetime.utcnow)
+    battery = Column(Float)
+    timestamp = Column(DateTime, default=datetime.now(UTC))
 
     # addig data to the database
     @staticmethod
