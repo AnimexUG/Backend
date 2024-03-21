@@ -1,6 +1,7 @@
 import httpx
+from sqlalchemy.orm import Session
 import asyncio
-from Models.models import SensorData
+from Models.models import SensorData, Receved_text
 from Connections.connections import session
 
 async def fetch_longitude():
@@ -74,4 +75,8 @@ async def get_unique_device_ids():
     with session as db:
         result = SensorData.get_unique_devices(db)
         return [device_id for (device_id,) in result]
+    
+async def add_text_from_sensor(db:Session, text):
+    text = Receved_text.add_text(db, text)
+    return text
 

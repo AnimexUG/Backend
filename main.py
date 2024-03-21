@@ -6,7 +6,6 @@ import asyncio
 from Routes import (
     admin_data_routes,
     sensor_data_routes
-
 )
 
 app = FastAPI()

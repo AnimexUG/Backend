@@ -73,6 +73,28 @@ class Admin(Base):
     def update_username(self, new_username_prefix):
         self.username = f"{new_username_prefix}@Animex.ug"
 
+class Receved_text(Base):
+    __tablename__ = 'receved_text'
+
+    id = Column(Integer, primary_key=True, index=True)
+    text = Column(String)
+
+    @staticmethod
+    def add_text(db,text):
+        text = Receved_text(text=text)
+        try:
+            db.add(text)
+            db.commit()
+            db.refresh(text)
+            return text
+        except Exception as e:
+            print(f"Error occurred: {e}")
+            db.rollback()
+
+    @staticmethod
+    def get_text(db):
+        return db.query(Receved_text).all()
+
 class UsernameChangeRequest(BaseModel):
     current_username: str
     new_username_prefix: str

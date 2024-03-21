@@ -9,6 +9,7 @@ engine = create_engine(os.getenv("DATABASE_ENGINE"))
 Session = sessionmaker(bind=engine)
 session = Session()
 Base = declarative_base()
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 EMAIL = os.getenv("EMAIL")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
