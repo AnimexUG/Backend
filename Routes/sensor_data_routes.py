@@ -45,6 +45,7 @@ async def read_unique_device_id():
     return {"devices": devices}
 
 @router.post('/device/text/')
-async def add_test_route(text,db: Session = Depends(get_db)):
+async def add_test_route(text_object:dict,db: Session = Depends(get_db)):
+    text = text_object['message']
     sent_text = await add_text_from_sensor(db, text)
     return {"status": "success", "message": "Data added successfully"}
