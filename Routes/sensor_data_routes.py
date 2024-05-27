@@ -6,7 +6,8 @@ from Controllers.sensor_data_controllers import (
     get_device_data,
     get_unique_device_ids,
     add_sensor_data_controller,
-    add_text_from_sensor
+    add_text_from_sensor,
+    update_single_value
 ) 
 router = APIRouter()
 
@@ -49,3 +50,8 @@ async def add_test_route(text_object:dict,db: Session = Depends(get_db)):
     text = text_object['message']
     sent_text = await add_text_from_sensor(db, text)
     return {"status": "success", "message": "Data added successfully"}
+
+@router.post('/single_update')
+async def update_single_value_route( longitude:float, db: Session = Depends(get_db)):
+    response = await update_single_value(db, "node", longitude)
+    return response

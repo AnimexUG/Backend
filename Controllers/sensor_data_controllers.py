@@ -80,3 +80,10 @@ async def add_text_from_sensor(db:Session, text):
     text = Receved_text.add_text(db, text)
     return text
 
+async def update_single_value(db:Session, device_id, longitude):
+    db.query(SensorData).filter(SensorData.device_id == device_id).update({SensorData.lng: longitude})
+    db.commit()
+    return {"status": "success", "message": "Data updated successfully", "data": {"device_id": device_id, "longitude": longitude}}
+
+    
+
